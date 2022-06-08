@@ -26,6 +26,7 @@ where
         let headers = req.headers();
 
         if let Some(user_agent) = headers.get("user-agent") {
+            dbg!(&user_agent);
             if user_agent == "github-camo" {
                 Ok(HasUserAgent(true))
             } else {

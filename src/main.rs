@@ -32,7 +32,7 @@ async fn main() {
 }
 
 fn set_response_template(value: String) -> impl IntoResponse {
-    ([("content-type", "image/svg+xml")], value)
+    ([("content-type", "image/svg+xml"), ("cache-control", "max-age=0, no-cache, no-store, must-revalidate")], value)
 }
 
 // basic handler that responds with a static string

@@ -1,4 +1,10 @@
-use axum::{extract::Query, response::IntoResponse, routing::get, Router};
+use axum::{
+    async_trait,
+    extract::{FromRequest, Query, RequestParts},
+    response::IntoResponse,
+    routing::get,
+    Router,
+};
 use mongodb::{bson::doc, options::ReplaceOptions, Collection};
 use std::collections::HashMap;
 use std::net::SocketAddr;
@@ -6,6 +12,31 @@ use std::net::SocketAddr;
 mod database;
 mod drawing;
 mod utils;
+
+struct HasUserAgent(bool);
+
+#[async_trait]
+impl<B> FromRequest<B> for HasUserAgent
+where
+    B: Send,
+{
+    type Rejection = &'static str;
+
+    async fn from_request(req: &mut RequestParts<B>) -> Result<Self, Self::Rejection> {
+        let headers = req.headers();
+
+        if let Some(user_agent) = headers.get("user-agent") {
+            dbg!(&user_agent);
+            if user_agent == "github-camo" {
+                Ok(HasUserAgent(true))
+            } else {
+                Ok(HasUserAgent(false))
+            }
+        } else {
+            Err("Invalid user-agent")
+        }
+    }
+}
 
 #[tokio::main]
 async fn main() {
@@ -36,7 +67,11 @@ fn set_response_template(value: String) -> impl IntoResponse {
 }
 
 // basic handler that responds with a static string
-async fn root(Query(params): Query<HashMap<String, String>>) -> impl IntoResponse {
+async fn root(
+    Query(params): Query<HashMap<String, String>>,
+    HasUserAgent(valid_user_agent): HasUserAgent,
+) -> impl IntoResponse {
+    dbg!(valid_user_agent);
     let color = match params.get("color") {
         Some(color) => {
             if utils::check_hex(color) {

@@ -42,7 +42,7 @@ Any six-digit hexadecimal color is valid.
 
 All pull-requests and issues are welcome. Just make sure you got a brain.
 
-If you got an error, Please open an issue at [here](https://github.com/aiocat/dll-crab/issues).
+If you got an error, Please open an issue at [here](https://github.com/aiocat/ripgvc/issues).
 
 ## Building
 

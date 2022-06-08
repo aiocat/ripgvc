@@ -14,14 +14,14 @@ RipGVC is a service that allows you to embed a `SVG` to your `README.md` file an
 This service aims to be fast as possible.
 
 ## Example
-![](https://boiling-forest-20066.herokuapp.com/?username=aiocat)
+![](https://ripgvc.herokuapp.com/?username=aiocat)
 
 You can use it like this:
 ```md
-![](https://boiling-forest-20066.herokuapp.com/?username=aiocat)
+![](https://ripgvc.herokuapp.com/?username=aiocat)
 ```
 Also you can customize your card color by passing `color` parameter:
 ```md
-![](https://boiling-forest-20066.herokuapp.com/?username=aiocat&color=ff7c1f)
+![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff7c1f)
 ```
 Any six-digit hexadecimal color is valid.

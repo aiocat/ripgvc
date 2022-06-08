@@ -47,7 +47,7 @@ pub fn draw_file(text: &str) -> String {
     -->
     
     <svg height="20" xmlns="http://www.w3.org/2000/svg">
-       <rect width="112" height="20" style="fill:#2a2a2a;" rx="5" ry="5" />
+       <rect width="80" height="20" style="fill:#2a2a2a;" rx="5" ry="5" />
        <text x="6" font-size="12px" font-family="monospace,sans-serif" y="15" fill="black">View Count</text>
        <text x="5" font-size="12px" font-family="monospace,sans-serif" y="14" fill="white">View Count</text>
        

@@ -2,8 +2,10 @@ use axum::{extract::Query, response::IntoResponse, routing::get, Router};
 use mongodb::{bson::doc, options::ReplaceOptions, Collection};
 use std::collections::HashMap;
 use std::net::SocketAddr;
+
 mod database;
 mod drawing;
+mod github;
 
 #[tokio::main]
 async fn main() {
@@ -61,14 +63,15 @@ async fn root(Query(params): Query<HashMap<String, String>>) -> impl IntoRespons
                 // return new
                 set_response_template(drawing::draw_file(&new_value.to_string()))
             } else {
-                // create new user
-                let user = database::User {
-                    _id: username.clone(),
-                    views: 0,
-                };
-
-                dbg!(&user);
-                users.insert_one(user, None).await.expect("Database error");
+                // check if github account exists
+                if github::check_username(&username).await {
+                    // create new user
+                    let user = database::User {
+                        _id: username.clone(),
+                        views: 0,
+                    };
+                    users.insert_one(user, None).await.expect("Database error");
+                }
                 set_response_template(drawing::draw_file("0"))
             }
         }

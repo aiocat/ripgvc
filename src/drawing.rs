@@ -36,7 +36,7 @@ pub fn draw_file(count: usize) {
 */
 
 pub fn draw_file(text: &str) -> String {
-    let width = 14 + (text.len() * 10);
+    let width = 12 + (text.len() * 8);
 
     format!(
         r#"<!--
@@ -48,16 +48,17 @@ pub fn draw_file(text: &str) -> String {
     
     <svg height="20" xmlns="http://www.w3.org/2000/svg">
        <rect width="112" height="20" style="fill:#2a2a2a;" rx="5" ry="5" />
-       <text x="6" font-family="monospace,sans-serif" y="15" fill="black">View Count</text>
-       <text x="5" font-family="monospace,sans-serif" y="14" fill="white">View Count</text>
+       <text x="6" font-size="12px" font-family="monospace,sans-serif" y="15" fill="black">View Count</text>
+       <text x="5" font-size="12px" font-family="monospace,sans-serif" y="14" fill="white">View Count</text>
        
-  <g>
-  <rect x="98" width="{0}" height="20" style="fill:#52d36a;" />
-  <svg x="98" width="{0}" height="20">
-    <text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle" font-family="monospace,sans-serif" font-weight="bold" fill="black">{1}</text>      
-  </svg>
-</g>
-    </svg>"#,
+        <g>
+            <rect x="76" width="{0}" height="20" style="fill:#52d36a;" />
+            <svg x="76" width="{0}" height="20">
+                <text x="50%" y="11" font-size="12px" alignment-baseline="middle" text-anchor="middle" font-family="monospace,sans-serif" font-weight="bold" fill="black">{1}</text>      
+            </svg>
+        </g>
+    </svg>
+    "#,
         width, text
     )
 }

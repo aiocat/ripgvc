@@ -35,7 +35,7 @@ pub fn draw_file(count: usize) {
 }
 */
 
-pub fn draw_file(text: &str) -> String {
+pub fn draw_file(text: &str, color: String) -> String {
     let width = 12 + (text.len() * 8);
 
     format!(
@@ -52,13 +52,13 @@ pub fn draw_file(text: &str) -> String {
        <text x="5" font-size="12px" font-family="monospace,sans-serif" y="14" fill="white">View Count</text>
        
         <g>
-            <rect x="76" width="{0}" height="20" style="fill:#52d36a;" />
+            <rect x="76" width="{0}" height="20" style="fill:{2};" />
             <svg x="76" width="{0}" height="20">
                 <text x="50%" y="11" font-size="12px" alignment-baseline="middle" text-anchor="middle" font-family="monospace,sans-serif" font-weight="bold" fill="black">{1}</text>      
             </svg>
         </g>
     </svg>
     "#,
-        width, text
+        width, text, color
     )
 }

@@ -5,7 +5,7 @@ use std::net::SocketAddr;
 
 mod database;
 mod drawing;
-mod github;
+mod utils;
 
 #[tokio::main]
 async fn main() {
@@ -37,6 +37,17 @@ fn set_response_template(value: String) -> impl IntoResponse {
 
 // basic handler that responds with a static string
 async fn root(Query(params): Query<HashMap<String, String>>) -> impl IntoResponse {
+    let color = match params.get("color") {
+        Some(color) => {
+            if utils::check_hex(color) {
+                format!("#{}", color)
+            } else {
+                String::from("#42a5f5")
+            }
+        }
+        None => String::from("#42a5f5"),
+    };
+
     match params.get("username") {
         Some(username) => {
             let connection = database::get_connection();
@@ -61,10 +72,10 @@ async fn root(Query(params): Query<HashMap<String, String>>) -> impl IntoRespons
                     .expect("Database error");
 
                 // return new
-                set_response_template(drawing::draw_file(&new_value.to_string()))
+                set_response_template(drawing::draw_file(&new_value.to_string(), color))
             } else {
                 // check if github account exists
-                if github::check_username(&username).await {
+                if utils::check_github_username(&username).await {
                     // create new user
                     let user = database::User {
                         _id: username.clone(),
@@ -72,9 +83,12 @@ async fn root(Query(params): Query<HashMap<String, String>>) -> impl IntoRespons
                     };
                     users.insert_one(user, None).await.expect("Database error");
                 }
-                set_response_template(drawing::draw_file("0"))
+                set_response_template(drawing::draw_file("0", color))
             }
         }
-        None => set_response_template(drawing::draw_file("User not found")),
+        None => set_response_template(drawing::draw_file(
+            "User not found",
+            String::from("#ff1744"),
+        )),
     }
 }

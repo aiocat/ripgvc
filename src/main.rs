@@ -26,8 +26,7 @@ where
         let headers = req.headers();
 
         if let Some(user_agent) = headers.get("user-agent") {
-            dbg!(&user_agent);
-            if user_agent == "github-camo" {
+            if user_agent.to_str().expect("User-agent parse error").contains("github-camo") {
                 Ok(HasUserAgent(true))
             } else {
                 Ok(HasUserAgent(false))
@@ -71,7 +70,13 @@ async fn root(
     Query(params): Query<HashMap<String, String>>,
     HasUserAgent(valid_user_agent): HasUserAgent,
 ) -> impl IntoResponse {
-    dbg!(valid_user_agent);
+    if !valid_user_agent {
+        return set_response_template(drawing::draw_file(
+            "Invalid user-agent",
+            String::from("#ff1744"),
+        ));
+    }
+
     let color = match params.get("color") {
         Some(color) => {
             if utils::check_hex(color) {

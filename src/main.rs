@@ -84,11 +84,15 @@ async fn root(
     Query(params): Query<HashMap<String, String>>,
     HasUserAgent(valid_user_agent): HasUserAgent,
 ) -> impl IntoResponse {
+    // get round mode
+    let round = params.get("round").is_some();
+
     // check user-agent
     if !valid_user_agent {
         return set_response_template(drawing::draw_file(
             "Invalid user-agent",
             String::from("#ff1744"),
+            round,
         ));
     }
 
@@ -126,7 +130,7 @@ async fn root(
                     .expect("Database error");
 
                 // return new
-                set_response_template(drawing::draw_file(&new_value.to_string(), color))
+                set_response_template(drawing::draw_file(&new_value.to_string(), color, round))
             } else {
                 // check if github account exists
                 if utils::check_github_username(&username).await {
@@ -140,12 +144,13 @@ async fn root(
                         .await
                         .expect("Database error");
                 }
-                set_response_template(drawing::draw_file("0", color))
+                set_response_template(drawing::draw_file("0", color, round))
             }
         }
         None => set_response_template(drawing::draw_file(
             "User not found",
             String::from("#ff1744"),
+            round,
         )),
     }
 }

@@ -27,16 +27,22 @@ You can use it like this:
 ```
 
 Also you can customize your card color by passing `color` parameter:
-
-```md
-![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff6c1f)
+_Any six-digit hexadecimal color is valid._
+```diff
+- ![](https://ripgvc.herokuapp.com/?username=aiocat)
++ ![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff6c1f)
 ```
 
-Any six-digit hexadecimal color is valid.
+And, you can make the left side round if you want to:
+```diff
+- ![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff6c1f)
++ ![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff6c1f&round)
+```
 
 ## Technologies
 
 - Rust with `axum` Back-End
+- MongoDB
 
 ## Contributing
 

@@ -1,6 +1,6 @@
 use axum::{
     async_trait,
-    extract::{FromRequest, Query, RequestParts},
+    extract::{Extension, FromRequest, Query, RequestParts},
     response::IntoResponse,
     routing::get,
     Router,
@@ -26,7 +26,11 @@ where
         let headers = req.headers();
 
         if let Some(user_agent) = headers.get("user-agent") {
-            if user_agent.to_str().expect("User-agent parse error").contains("github-camo") {
+            if user_agent
+                .to_str()
+                .expect("User-agent parse error")
+                .contains("github-camo")
+            {
                 Ok(HasUserAgent(true))
             } else {
                 Ok(HasUserAgent(false))
@@ -40,12 +44,12 @@ where
 #[tokio::main]
 async fn main() {
     // connect to the database
-    if let Err(error) = database::setup().await {
-        panic!("{}", error);
-    }
+    let database: Collection<database::User> = database::setup().await.collection("users");
 
     // new app router
-    let app = Router::new().route("/", get(root));
+    let app = Router::new()
+        .route("/", get(root))
+        .layer(Extension(database));
 
     // get port
     let port = std::env::var("PORT")
@@ -62,14 +66,25 @@ async fn main() {
 }
 
 fn set_response_template(value: String) -> impl IntoResponse {
-    ([("content-type", "image/svg+xml"), ("cache-control", "max-age=0, no-cache, no-store, must-revalidate")], value)
+    (
+        [
+            ("content-type", "image/svg+xml"),
+            (
+                "cache-control",
+                "max-age=0, no-cache, no-store, must-revalidate",
+            ),
+        ],
+        value,
+    )
 }
 
-// basic handler that responds with a static string
+// main handler
 async fn root(
+    Extension(database): Extension<Collection<database::User>>,
     Query(params): Query<HashMap<String, String>>,
     HasUserAgent(valid_user_agent): HasUserAgent,
 ) -> impl IntoResponse {
+    // check user-agent
     if !valid_user_agent {
         return set_response_template(drawing::draw_file(
             "Invalid user-agent",
@@ -77,6 +92,7 @@ async fn root(
         ));
     }
 
+    // get color code
     let color = match params.get("color") {
         Some(color) => {
             if utils::check_hex(color) {
@@ -88,13 +104,11 @@ async fn root(
         None => String::from("#42a5f5"),
     };
 
+    // get username
     match params.get("username") {
         Some(username) => {
-            let connection = database::get_connection();
-            let users: Collection<database::User> = connection.collection("users");
-
             // check if exists in database
-            let result = users
+            let result = database
                 .find_one(doc! {"_id": username}, None)
                 .await
                 .expect("Database error");
@@ -106,7 +120,7 @@ async fn root(
                 // increase
                 let new_value = user.views + 1;
                 user.views = new_value;
-                users
+                database
                     .replace_one(doc! {"_id": username}, user, replace_option)
                     .await
                     .expect("Database error");
@@ -121,7 +135,10 @@ async fn root(
                         _id: username.clone(),
                         views: 0,
                     };
-                    users.insert_one(user, None).await.expect("Database error");
+                    database
+                        .insert_one(user, None)
+                        .await
+                        .expect("Database error");
                 }
                 set_response_template(drawing::draw_file("0", color))
             }

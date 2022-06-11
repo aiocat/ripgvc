@@ -3,9 +3,6 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-// IMPORTANT:
-// This part is edited version of the <https://github.com/ndelvalle/rustapi/blob/cd06b205551232eaa7b95ab5801db9a5785cab4e/src/database.rs>
-
 use mongodb::Database;
 use serde::{Deserialize, Serialize};
 

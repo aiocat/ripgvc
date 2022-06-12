@@ -18,7 +18,7 @@ This service aims to be fast as possible.
 
 ## Example
 
-![Example](https://ripgvc.herokuapp.com/?username=asd&color=ff6c1f)
+![Example](https://ripgvc.herokuapp.com/?username=your-github-username&color=e64f00)
 
 You can use it like this:
 
@@ -30,13 +30,13 @@ Also you can customize your card color by passing `color` parameter:
 _Any six-digit hexadecimal color is valid._
 ```diff
 - ![](https://ripgvc.herokuapp.com/?username=aiocat)
-+ ![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff6c1f)
++ ![](https://ripgvc.herokuapp.com/?username=aiocat&color=e64f00)
 ```
 
 And, you can make the left side round if you want to:
 ```diff
-- ![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff6c1f)
-+ ![](https://ripgvc.herokuapp.com/?username=aiocat&color=ff6c1f&round)
+- ![](https://ripgvc.herokuapp.com/?username=aiocat&color=e64f00)
++ ![](https://ripgvc.herokuapp.com/?username=aiocat&color=e64f00&round)
 ```
 
 ## Technologies

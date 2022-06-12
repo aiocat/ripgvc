@@ -136,7 +136,7 @@ async fn root(
                 if utils::check_github_username(&username).await {
                     // create new user
                     let user = database::User {
-                        _id: username.clone(),
+                        _id: username.to_string(),
                         views: 0,
                     };
                     database
@@ -149,7 +149,7 @@ async fn root(
         }
         None => set_response_template(drawing::draw_file(
             "User not found",
-            String::from("#ff1744"),
+            String::from("#1b5acf"),
             round,
         )),
     }

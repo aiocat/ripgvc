@@ -91,7 +91,7 @@ async fn root(
     if !valid_user_agent {
         return set_response_template(drawing::draw_file(
             "Invalid user-agent",
-            String::from("#ff1744"),
+            String::from("#cf1b1b"),
             round,
         ));
     }
@@ -102,10 +102,10 @@ async fn root(
             if utils::check_hex(color) {
                 format!("#{}", color)
             } else {
-                String::from("#42a5f5")
+                String::from("#1b5acf")
             }
         }
-        None => String::from("#42a5f5"),
+        None => String::from("#1b5acf"),
     };
 
     // get username

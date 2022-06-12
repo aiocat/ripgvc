@@ -17,17 +17,18 @@ https://opensource.org/licenses/MIT
     
 <svg height="20" xmlns="http://www.w3.org/2000/svg">
     <rect width="80" height="20" style="fill:#2a2a2a;" {3} />
-    <text x="6" font-size="12px" font-family="Verdana,monospace,sans-serif" y="15" fill="black">View Count</text>
-    <text x="5" font-size="12px" font-family="Verdana,monospace,sans-serif" y="14" fill="white">View Count</text>
+    <text x="6" font-size="11" font-family="Verdana,monospace,sans-serif" y="15" fill="black">View Count</text>
+    <text x="5" font-size="11" font-family="Verdana,monospace,sans-serif" y="14" fill="white">View Count</text>
     
     <g>
-        <rect x="76" width="{0}" height="20" style="fill:{2};" {3} />
-        <svg x="76" width="{0}" height="20">
-            <text x="50%" y="11" font-size="12px" alignment-baseline="middle" text-anchor="middle" font-family="Verdana,monospace,sans-serif" fill="black">{1}</text>      
+        <rect x="70" width="{0}" height="20" style="fill:{2};" {3} />
+        <svg x="70" width="{0}" height="20">
+            <text x="51%" font-size="11" text-anchor="middle" y="15" font-family="Verdana,monospace,sans-serif" fill="black">{1}</text>
+            <text x="50%" font-size="11" text-anchor="middle" y="14" font-family="Verdana,monospace,sans-serif" fill="white">{1}</text>
         </svg>
     </g>
 
-    <rect x="76" width="3" height="20" style="fill:#2a2a2a;" />
+    <rect x="70" width="3" height="20" style="fill:#2a2a2a;" />
 </svg>
 "#,
         width, text, color, round_corner

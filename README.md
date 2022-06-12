@@ -18,7 +18,7 @@ This service aims to be fast as possible.
 
 ## Example
 
-![Example](https://ripgvc.herokuapp.com/?username=your-github-username&color=e64f00)
+![Example](https://ripgvc.herokuapp.com/?username=your-github-username&color=e64f00&round)
 
 You can use it like this:
 

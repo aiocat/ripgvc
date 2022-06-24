@@ -87,15 +87,6 @@ async fn root(
     // get round mode
     let round = params.get("round").is_some();
 
-    // check user-agent
-    if !valid_user_agent {
-        return set_response_template(drawing::draw_file(
-            "Invalid user-agent",
-            String::from("#cf1b1b"),
-            round,
-        ));
-    }
-
     // get color code
     let color = match params.get("color") {
         Some(color) => {
@@ -116,10 +107,20 @@ async fn root(
                 .find_one(doc! {"_id": username}, None)
                 .await
                 .expect("Database error");
+                
             if let Some(mut user) = result {
                 // user found
                 let mut replace_option = ReplaceOptions::default();
                 replace_option.upsert = Some(true);
+
+                // check user-agent
+                if !valid_user_agent {
+                    return set_response_template(drawing::draw_file(
+                        &user.views.to_string(),
+                        color,
+                        round,
+                    ));
+                }
 
                 // increase
                 let new_value = user.views + 1;
